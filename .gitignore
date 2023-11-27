@@ -1,0 +1,16 @@
+﻿# This .gitignore file should be placed at the root of your Unity project directory
+
+# Exclude the Library directory
+/Library/
+
+# Exclude other files and directories that should not be part of version control
+/.vs/
+/obj/
+/Builds/
+/Logs/
+/UserSettings/
+
+# OS generated files
+.DS_Store*
+._*
+Thumbs.db
