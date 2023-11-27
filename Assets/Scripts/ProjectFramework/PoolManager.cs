@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -36,7 +35,7 @@ public class PoolContainer
     public GameObject GetObject()
     {
         GameObject go = null;
-        if (_poolList.Count > 0)
+        while(_poolList.Count > 0 && go == null)
         {
             go = _poolList[0];
             _poolList.RemoveAt(0);
@@ -46,6 +45,7 @@ public class PoolContainer
         if (go == null)
         {
             go = GameObject.Instantiate(_template);
+            PoolManager.Instance.ClearNullKeys();
         }
 
         go.SetActive(true);
@@ -96,7 +96,7 @@ public class PoolManager : SingletonManager<PoolManager>
 
         if (!_returnDic.ContainsKey(go))
         {
-            _returnDic.Add(go, container); 
+                _returnDic.Add(go, container); 
         }
         else 
         {
@@ -142,4 +142,11 @@ public class PoolManager : SingletonManager<PoolManager>
         return poolContainer;
     }
     
+    public void ClearNullKeys()
+    {
+        _poolDic = _poolDic.Where( x => x.Key != null).ToDictionary(x => x.Key, x => x.Value);
+        _returnDic = _returnDic.Where( x => x.Key != null).ToDictionary(x => x.Key, x => x.Value);
+        _poolObjectDic = _poolObjectDic.Where( x => x.Key != null).ToDictionary(x => x.Key, x => x.Value);
+    }   
+
 }
