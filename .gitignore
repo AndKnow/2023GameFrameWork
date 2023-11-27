@@ -2,15 +2,20 @@
 
 # Exclude the Library directory
 /Library/
+/Library/*
 
 # Exclude other files and directories that should not be part of version control
 /.vs/
 /obj/
 /Builds/
 /Logs/
+/Logs/*
 /UserSettings/
+/Temp/
 
 # OS generated files
 .DS_Store*
 ._*
 Thumbs.db
+Logs
+Library
