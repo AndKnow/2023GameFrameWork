@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SingletonManager<T> where T : new()
+namespace FrameWork
 {
-    private static T _instance;
-    public static T Instance 
+    public class SingletonManager<T> where T : new()
     {
-        get 
+        private static T _instance;
+        public static T Instance 
         {
-            if (_instance == null)
-                _instance = new T();
+            get 
+            {
+                if (_instance == null)
+                    _instance = new T();
 
-            return _instance;
+                return _instance;
+            }
         }
     }
+
 }
