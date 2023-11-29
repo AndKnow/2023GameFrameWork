@@ -18,4 +18,15 @@ public static class Extension
             }
         }
     }
+
+    public static T GetSingletonMonoComponent<T> () where T : MonoBehaviour
+    {
+        var component = GameObject.FindObjectOfType<T>(true);
+        if (component == null)
+        {
+            component = new GameObject(typeof(T).ToString()).AddComponent<T>();
+        }
+        component.gameObject.SetActive(true);
+        return component;
+    }
 }
