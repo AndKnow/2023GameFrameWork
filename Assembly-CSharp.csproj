@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\EventManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\TestPool.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\NoMono.cs" />
+    <Compile Include="Assets\Scripts\ProjectFramework\SceneManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PublicMonoManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PoolManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PoolObject.cs" />

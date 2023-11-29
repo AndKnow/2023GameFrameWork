@@ -19,7 +19,17 @@ public class ButtonTest : MonoBehaviour
 
     private void Awake()
     {
-
+        TestScene();
+    }
+    
+    /// <summary>
+    /// 测试场景管理器模块,但是加载速度太快了看不出变化,NND
+    /// </summary>
+    public async void TestScene()
+    {
+        Debug.Log("BeforeLoadingScene");
+        await GameSceneManager.Instance.LoadSceneAsync("TestNewScene");
+        Debug.Log("AfterLoadingScene");
     }
 
     /// <summary>
