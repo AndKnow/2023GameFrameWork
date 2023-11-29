@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using FrameWork;
 using System;
 using System.Collections;
@@ -13,34 +14,53 @@ public class ButtonTest : MonoBehaviour
 
     private void Update()
     {
-        // 测试对象池
-        // if (Input.GetMouseButtonDown(0))
-        // {
-        //     GameObject go = PoolManager.Instance.GetObject(template1);
-        //     go.transform.position = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
-        //     Task.Delay(200).ContinueWith( x => PoolManager.Instance.ReturnObject(go));
-        // }
-        // if (Input.GetMouseButtonDown(1))
-        // {
-        //     GameObject go = PoolManager.Instance.GetObject(template2);
-        //     go.transform.position = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
-        //     Task.Delay(200).ContinueWith( x => PoolManager.Instance.ReturnObject(go));
-        // }
+
     }
 
-    private async void Awake()
+    private void Awake()
     {
-        //测试事件中心
-        //EventManager.Instance.AddEventListener("ObjectDestroy", ObjectDestroyHandler);
 
-        //测试公共Mono模块
+    }
+
+    /// <summary>
+    /// 测试公共Mono模块
+    /// </summary>
+    public void TestPublicMono()
+    {
         NoMono n1 = new NoMono() { Message = "I'm OK" };
         NoMono n2 = new NoMono() { Message = "NO GOOD" };
         PublicMonoManager.Instance.ClearUpdateListener();
         PublicMonoManager.Instance.AddUpdateListener(n1.FakeUpdate);
-        await Task.Delay(1000);
         PublicMonoManager.Instance.ClearUpdateListener();
         PublicMonoManager.Instance.AddUpdateListener(n2.FakeUpdate);
+    }
+
+    /// <summary>
+    /// 测试对象池模块
+    /// </summary>
+    public void TestPool()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject go = PoolManager.Instance.GetObject(template1);
+            go.transform.position = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
+            Task.Delay(200).ContinueWith( x => PoolManager.Instance.ReturnObject(go));
+        }
+        if (Input.GetMouseButtonDown(1))
+        {
+            GameObject go = PoolManager.Instance.GetObject(template2);
+            go.transform.position = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
+            Task.Delay(200).ContinueWith( x => PoolManager.Instance.ReturnObject(go));
+        }
+    }
+
+    /// <summary>
+    /// 测试事件管理器模块
+    /// </summary>
+    /// <param name="sender"></param>
+    public void TestEvent(object sender)
+    {
+        EventManager.Instance.AddEventListener("ObjectDestroy", ObjectDestroyHandler);
     }
 
     protected void ObjectDestroyHandler(object sender)
