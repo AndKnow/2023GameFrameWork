@@ -3,6 +3,7 @@ using FrameWork;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,20 @@ public class ButtonTest : MonoBehaviour
 
     private void Awake()
     {
-        TestScene();
+        TestInput();
+    }
+
+    public void TestInput()
+    {
+        InputManager.Instance.SwitchInput(true);
+        EventManager.Instance.AddEventListener("Horizontal", HandleInput);
+        EventManager.Instance.AddEventListener("Vertical", HandleInput);
+        EventManager.Instance.AddEventListener("Fire1", HandleInput);
+    }
+
+    public void HandleInput(object value)
+    {
+        Debug.Log((float)value);
     }
     
     /// <summary>
