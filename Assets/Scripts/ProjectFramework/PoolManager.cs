@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using static FrameWork.ResourceManager;
 
 namespace FrameWork
 {
@@ -47,6 +50,29 @@ namespace FrameWork
             if (go == null)
             {
                 go = GameObject.Instantiate(_template);
+                PoolManager.Instance.ClearNullKeys();
+            }
+
+            go.SetActive(true);
+            go.transform.parent = null;
+
+            return go;
+        }
+
+        // 对象池获取异步加载的物体
+        public async UniTask<GameObject> GetObjectAsync()
+        {
+            GameObject go = null;
+            while(_poolList.Count > 0 && go == null)
+            {
+                go = _poolList[0];
+                _poolList.RemoveAt(0);
+            }
+            
+            // 也是为了防止切换场景的时候移除了对象, 但是池中还保留了引用
+            if (go == null)
+            {
+                await ResourceManager.Instance.InstantiateAsync<GameObject>(_template);
                 PoolManager.Instance.ClearNullKeys();
             }
 

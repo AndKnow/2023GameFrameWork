@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\PublicMonoManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PoolManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PoolObject.cs" />
+    <Compile Include="Assets\Scripts\ProjectFramework\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\Extention.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\SingletonManager.cs" />
