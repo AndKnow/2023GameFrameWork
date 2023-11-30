@@ -11,7 +11,7 @@ namespace FrameWork
     public class EventManager : SingletonManager<EventManager>
     {
         Dictionary<string, UnityAction<object>> _eventDic = new Dictionary<string, UnityAction<object>>();
-        Dictionary<string, List<Func<object, UniTask>>> _eventAsyncDic = new Dictionary<string, List<Func<object, UniTask>>>();
+        Dictionary<string, Func<object, UniTask>> _eventAsyncDic = new Dictionary<string, Func<object, UniTask>>();
 
         // 普通版本的事件管理器
 #region 
@@ -63,17 +63,17 @@ namespace FrameWork
         {
             if (!_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventAsyncDic.Add(eventName, new List<Func<object, UniTask>>());
+                _eventAsyncDic.Add(eventName, null);
             }
 
-            _eventAsyncDic[eventName].Add(action);
+            _eventAsyncDic[eventName] += action;
         }
 
         public void RemoveEventListenerAsync(string eventName, Func<object, UniTask> action)
         {
             if (_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventAsyncDic[eventName].Remove(action);
+                _eventAsyncDic[eventName] = null;
             }
         }
 
@@ -81,13 +81,13 @@ namespace FrameWork
         {
             if (_eventAsyncDic.ContainsKey(eventName))
             {
-                await UniTask.WhenAll(_eventAsyncDic[eventName].Select(x => x.Invoke(param)));
+                await UniTask.WhenAll(_eventAsyncDic[eventName].GetInvocationList().Select( x => (x as Func<object, UniTask>).Invoke(param)));
             }
         }
 
         public void ClearEventAsync(string eventName)
         {
-            _eventAsyncDic.Remove(eventName);
+            _eventAsyncDic[eventName] = null;
         }
 
         public void ClearEventsAsync()
