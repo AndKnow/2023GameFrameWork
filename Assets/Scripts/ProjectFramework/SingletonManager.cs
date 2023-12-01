@@ -6,7 +6,7 @@ namespace FrameWork
 {
     public class SingletonManager<T> where T : new()
     {
-        private static T _instance;
+        protected static T _instance;
         public static T Instance 
         {
             get 
@@ -15,6 +15,10 @@ namespace FrameWork
                     _instance = new T();
 
                 return _instance;
+            }
+            set
+            {
+                _instance = value;
             }
         }
     }

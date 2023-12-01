@@ -1,7 +1,8 @@
 {
     "cSpell.words": [
         "Behaviour",
-        "Cysharp"
+        "Cysharp",
+        "Newtonsoft"
     ],
     "dotnet.preferCSharpExtension": true
 }
