@@ -15,23 +15,25 @@ public class ButtonTest : MonoBehaviour
 
     private void Update()
     {
-
+        TestPool();
     }
 
     private void Awake()
     {
-        TestInput();
+        TestEvent();
+        TestInput();    
+        // TestPool();
     }
 
     public void TestInput()
     {
         InputManager.Instance.SwitchInput(true);
-        EventManager.Instance.AddEventListener("Horizontal", HandleInput);
-        EventManager.Instance.AddEventListener("Vertical", HandleInput);
-        EventManager.Instance.AddEventListener("Fire1", HandleInput);
+        EventManager.Instance.AddAsyncEventListener<float>("Horizontal", HandleInput);
+        EventManager.Instance.AddAsyncEventListener<float>("Vertical", HandleInput);
+        EventManager.Instance.AddAsyncEventListener<float>("Fire1", HandleInput);
     }
 
-    public void HandleInput(object value)
+    public async UniTask HandleInput(float value)
     {
         Debug.Log((float)value);
     }
@@ -78,17 +80,13 @@ public class ButtonTest : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 测试事件管理器模块
-    /// </summary>
-    /// <param name="sender"></param>
-    public void TestEvent(object sender)
+    public void TestEvent()
     {
-        EventManager.Instance.AddEventListener("ObjectDestroy", ObjectDestroyHandler);
+        EventManager.Instance.AddAsyncEventListener<PoolObject>("ObjectDestroy", ObjectDestroyHandler);
     }
 
-    protected void ObjectDestroyHandler(object sender)
+    protected async UniTask ObjectDestroyHandler(PoolObject sender)
     {
-        Debug.Log("Handler " + (sender as PoolObject).ObjectName);
+        Debug.Log("Handler " + sender.ObjectName);
     }
 }

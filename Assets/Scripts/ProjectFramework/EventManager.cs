@@ -7,51 +7,79 @@ using UnityEngine.Events;
 
 namespace FrameWork
 {
+    public interface IEventFunc
+    {
+
+    }
+
+    public class EventFunc<T> : IEventFunc
+    {
+        public Func<T, UniTask> func;
+
+        public EventFunc()
+        {
+            func = null;
+        }
+
+        public EventFunc(Func<T, UniTask> f)
+        {
+            func += f;
+        }
+    }
+
+    public class EventFunc : IEventFunc
+    {
+        public Func<UniTask> func;
+
+        public EventFunc()
+        {
+            func = null;
+        }
+        
+        public EventFunc(Func<UniTask> f)
+        {
+            func += f;
+        }
+    }
 
     public class EventManager : SingletonManager<EventManager>
     {
-        Dictionary<string, UnityAction<object>> _eventDic = new Dictionary<string, UnityAction<object>>();
-        Dictionary<string, Func<object, UniTask>> _eventAsyncDic = new Dictionary<string, Func<object, UniTask>>();
+        Dictionary<string, IEventFunc> _eventAsyncDic;
 
-        // 普通版本的事件管理器
+        public EventManager()
+        {
+            _eventAsyncDic = new Dictionary<string, IEventFunc>();
+        }
+
+        // 无参数版本的异步事件管理
 #region 
 
-        public void AddEventListener(string eventName, UnityAction<object> action)
+        public void AddAsyncEventListener(string eventName, Func<UniTask> func)
         {
-            if (_eventDic.ContainsKey(eventName))
+            if (_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventDic[eventName] += action;
+                (_eventAsyncDic[eventName] as EventFunc).func += func;
             }
             else
             {
-                _eventDic.Add(eventName, action);
+                _eventAsyncDic.Add(eventName, new EventFunc(func));
             }
         }
 
-        public void RemoveEventListener(string eventName, UnityAction<object> action)
+        public void RemoveAsyncEventListener(string eventName, Func<UniTask> func)
         {
-            if (_eventDic.ContainsKey(eventName))
+            if (_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventDic[eventName] -= action;
+                (_eventAsyncDic[eventName] as EventFunc).func -= func;
             }
         }
 
-        public void InvokeEvent(string eventName, object param = null)
+        public async UniTask InvokeEventAsync(string eventName)
         {
-            if (_eventDic.ContainsKey(eventName))
+            if (_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventDic[eventName]?.Invoke(param);
+                await UniTask.WhenAll((_eventAsyncDic[eventName] as EventFunc).func?.GetInvocationList().Select(x => (x as Func<UniTask>).Invoke()));
             }
-        }
-
-        public void ClearEvent(string eventName)
-        {
-            _eventDic.Remove(eventName);
-        }
-
-        public void ClearEvents()
-        {
-            _eventDic.Clear();
         }
         
 #endregion
@@ -59,38 +87,38 @@ namespace FrameWork
         // 异步版本的事件管理器
 #region
 
-        public void AddEventListenerAsync(string eventName, Func<object, UniTask> action)
+        public void AddAsyncEventListener<T>(string eventName, Func<T, UniTask> func)
         {
             if (!_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventAsyncDic.Add(eventName, null);
+                _eventAsyncDic.Add(eventName, new EventFunc<T>());
             }
 
-            _eventAsyncDic[eventName] += action;
+            (_eventAsyncDic[eventName] as EventFunc<T>).func += func;
         }
 
-        public void RemoveEventListenerAsync(string eventName, Func<object, UniTask> action)
+        public void RemoveAsyncEventListener<T>(string eventName, Func<T, UniTask> func)
         {
             if (_eventAsyncDic.ContainsKey(eventName))
             {
-                _eventAsyncDic[eventName] = null;
+               (_eventAsyncDic[eventName] as EventFunc<T>).func -= func;
             }
         }
 
-        public async UniTask InvokeEventAsync(string eventName, object param = null)
+        public async UniTask InvokeEventAsync<T>(string eventName, T param)
         {
             if (_eventAsyncDic.ContainsKey(eventName))
             {
-                await UniTask.WhenAll(_eventAsyncDic[eventName].GetInvocationList().Select( x => (x as Func<object, UniTask>).Invoke(param)));
+                await UniTask.WhenAll((_eventAsyncDic[eventName] as EventFunc<T>).func.GetInvocationList().Select( x => (x as Func<T, UniTask>).Invoke(param)));
             }
         }
 
-        public void ClearEventAsync(string eventName)
+        public void ClearAsyncEvent(string eventName)
         {
-            _eventAsyncDic[eventName] = null;
+            _eventAsyncDic.Remove(eventName);
         }
 
-        public void ClearEventsAsync()
+        public void ClearAsyncEvents()
         {
             _eventAsyncDic.Clear();
         }

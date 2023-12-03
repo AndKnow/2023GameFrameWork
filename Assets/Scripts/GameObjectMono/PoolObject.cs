@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using FrameWork;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ public class PoolObject : MonoBehaviour, IPoolObject
     {
         transform.localScale = Vector3.one;
         // 测试事件管理器
-        EventManager.Instance.InvokeEvent("ObjectDestroy", this);
+        EventManager.Instance.InvokeEventAsync<PoolObject>("ObjectDestroy", this).Forget();
 
     }
 

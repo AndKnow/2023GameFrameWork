@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace FrameWork
@@ -32,7 +33,7 @@ namespace FrameWork
             float value = Input.GetAxis(axis);
             if (value != 0)
             {
-                EventManager.Instance.InvokeEvent(axis, value);
+                EventManager.Instance.InvokeEventAsync(axis, value).Forget();
             }
         }
     }
