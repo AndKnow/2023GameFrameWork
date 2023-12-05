@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\EventManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\TestPool.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\MusicManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjectMono\TestUIPanel.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\NoMono.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\InputManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\SceneManager.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\Extention.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\SingletonManager.cs" />
+    <Compile Include="Assets\Scripts\ProjectFramework\UGUIPanelBaseController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

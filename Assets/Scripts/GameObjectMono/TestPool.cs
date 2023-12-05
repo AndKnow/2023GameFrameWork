@@ -15,19 +15,19 @@ public class ButtonTest : MonoBehaviour
 
     private void Update()
     {
-        TestPool();
+        // TestPool();
     }
 
     private void Awake()
     {
-        TestEvent();
-        TestInput();    
+        // TestEvent();
+        // TestInput();    
         // TestPool();
     }
 
     private void OnGUI()
     {
-        TestMusic();
+        // TestMusic();
     }
 
     public void TestMusic()
