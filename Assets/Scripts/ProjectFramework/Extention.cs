@@ -39,4 +39,20 @@ public static class Extension
         component.gameObject.SetActive(true);
         return component;
     }
+
+    /// <summary>
+    /// 获取单例Mono组件,先遍历查找再创建,可能有一定的性能开销
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetSingletonComponent<T> () where T : Component
+    {
+        var component = GameObject.FindObjectOfType<T>(true);
+        if (component == null)
+        {
+            component = new GameObject(typeof(T).ToString()).AddComponent<T>();
+        }
+        component.gameObject.SetActive(true);
+        return component;
+    }
 }

@@ -25,6 +25,31 @@ public class ButtonTest : MonoBehaviour
         // TestPool();
     }
 
+    private void OnGUI()
+    {
+        TestMusic();
+    }
+
+    public void TestMusic()
+    {
+        if (GUI.Button(new Rect(0, 0, 100, 100), "Play"))
+        {
+            MusicManager.Instance.PlayBackgroundMusic("BGM");
+        }
+        if (GUI.Button(new Rect(0, 100, 100, 100), "Stop"))
+        {
+            MusicManager.Instance.StopBackgroundMusic();
+        }
+        if (GUI.Button(new Rect(0, 200, 100, 100), "Pause"))
+        {
+            MusicManager.Instance.PauseBackgroundMusic();
+        }
+        if (GUI.Button(new Rect(0, 300, 100, 100), "ChangeVolume"))
+        {
+            MusicManager.Instance.ChangeBackgroundMusicVolume(0.5f);
+        }
+    }
+
     public void TestInput()
     {
         InputManager.Instance.SwitchInput(true);

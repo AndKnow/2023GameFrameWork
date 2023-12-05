@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ProjectFramework\EventManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\TestPool.cs" />
+    <Compile Include="Assets\Scripts\ProjectFramework\MusicManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\NoMono.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\InputManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\SceneManager.cs" />

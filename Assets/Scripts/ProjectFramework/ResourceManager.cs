@@ -6,10 +6,10 @@ namespace FrameWork
 {
     public class ResourceManager : SingletonManager<ResourceManager> 
     {   
-        string _ResourcePath = "Assets/Resources/";
-        public object Load<T>(string path) where T : Object
+        string _ResourcePath = "";
+        public T Load<T>(string path) where T : Object
         {
-            return Resources.Load<T>(_ResourcePath + path);
+            return Resources.Load<T>(_ResourcePath + path) as T;
         }
 
         public async UniTask<T> LoadAsync<T>(string path) where T : Object
