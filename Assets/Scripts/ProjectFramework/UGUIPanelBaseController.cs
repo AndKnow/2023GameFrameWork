@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace FrameWork
 {
-    public class UGUIPanelBaseController : MonoBehaviour
+    public abstract class UGUIPanelBaseController : MonoBehaviour
     {
         Dictionary<string, List<UIBehaviour>> _componentsDic = new Dictionary<string, List<UIBehaviour>>();
 
@@ -56,6 +56,23 @@ namespace FrameWork
                 }
                 
                 _componentsDic[componentName].Add(component);
+
+                if (component is Button)
+                {
+                    (component as Button).onClick.AddListener(() => { HandleButton(componentName); });
+                }
+                else if (component is InputField)
+                {
+                    (component as InputField).onEndEdit.AddListener((content) => { HandleInputField(componentName, content); });
+                }
+                else if (component is Toggle)
+                {
+                    (component as Toggle).onValueChanged.AddListener((isOn) => { HandleToggle(componentName, isOn); });
+                }
+                else if (component is Dropdown)
+                {
+                    (component as Dropdown).onValueChanged.AddListener((index) => { HandleDropdown(componentName, index); });
+                }
             }
         }
 
@@ -77,6 +94,16 @@ namespace FrameWork
 
 #endregion
     
+        // 子对象回调预处理
+#region 
+
+        public abstract void HandleButton(string name);
+        public abstract void HandleInputField(string name, string content);
+        public abstract void HandleToggle(string name, bool isOn);
+        public abstract void HandleDropdown(string name, int index);
+
+#endregion
+
         // 面板的显示和隐藏
 #region 
 
@@ -85,6 +112,8 @@ namespace FrameWork
             gameObject.SetActive(true);
         } 
 
+        public abstract void OnShow();
+
         public virtual void Hide()
         {
             gameObject.SetActive(false);
@@ -92,5 +121,6 @@ namespace FrameWork
 
 #endregion
 
+        // 
     }
 }
