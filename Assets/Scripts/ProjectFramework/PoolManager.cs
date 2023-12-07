@@ -104,12 +104,14 @@ namespace FrameWork
                 return _poolRoot;
             }
         }
+        Dictionary<string, GameObject> _prototypeDic;
         Dictionary<GameObject, PoolContainer> _poolDic;
         Dictionary<GameObject, PoolContainer> _returnDic;
         Dictionary<GameObject, IPoolObject[]> _poolObjectDic;
 
         public PoolManager()
         {
+            _prototypeDic = new Dictionary<string, GameObject>();
             _poolDic = new Dictionary<GameObject, PoolContainer>();
             _returnDic = new Dictionary<GameObject, PoolContainer>();
             _poolObjectDic = new Dictionary<GameObject, IPoolObject[]>();
@@ -141,6 +143,23 @@ namespace FrameWork
             }
 
             return go;
+        }
+        
+        public GameObject GetObject(string objName)
+        {
+            GameObject obj = null;
+            if (!_prototypeDic.ContainsKey(objName))
+            {
+                obj = ResourceManager.Instance.Load<GameObject>("Prefabs/" + objName);
+                if (obj == null)
+                {
+                    return null;
+                }
+
+                _prototypeDic.Add(objName, obj);
+            }
+  
+            return GetObject(_prototypeDic[objName]);
         }
 
         public void ReturnObject(GameObject obj)

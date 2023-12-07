@@ -15,7 +15,7 @@ public class ButtonTest : MonoBehaviour
 
     private void Update()
     {
-        // TestPool();
+        TestPool();
     }
 
     private void Awake()
@@ -99,7 +99,7 @@ public class ButtonTest : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1))
         {
-            GameObject go = PoolManager.Instance.GetObject(template2);
+            GameObject go = PoolManager.Instance.GetObject("Sphere");
             go.transform.position = new Vector3(UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f), 0);
             Task.Delay(200).ContinueWith( x => PoolManager.Instance.ReturnObject(go));
         }

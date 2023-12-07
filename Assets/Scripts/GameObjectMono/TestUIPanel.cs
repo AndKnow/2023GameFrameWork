@@ -8,8 +8,8 @@ public class TestUIPanel : UGUIPanelBaseController
 {
     protected override void InitCallBack()
     {
-        GetUIComponent<Button>("Button1").onClick.AddListener(OnClickButton1);
-        GetUIComponent<Button>("Button2").onClick.AddListener(OnClickButton2);
+        // GetUIComponent<Button>("Button1").onClick.AddListener(OnClickButton1);
+        // GetUIComponent<Button>("Button2").onClick.AddListener(OnClickButton2);
     } 
 
     public void OnClickButton1()
@@ -21,5 +21,17 @@ public class TestUIPanel : UGUIPanelBaseController
     {
         Debug.Log("OnClickButton2");
     }
-    
+
+    public override void HandleButton(string name)
+    {
+        if (name == "Button1")
+        {
+            OnClickButton1();
+        }
+        else if (name == "Button2")
+        {
+            OnClickButton2();
+        }
+    }
+
 }

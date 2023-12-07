@@ -97,10 +97,10 @@ namespace FrameWork
         // 子对象回调预处理
 #region 
 
-        public abstract void HandleButton(string name);
-        public abstract void HandleInputField(string name, string content);
-        public abstract void HandleToggle(string name, bool isOn);
-        public abstract void HandleDropdown(string name, int index);
+        public virtual void HandleButton(string name) {}
+        public virtual void HandleInputField(string name, string content) {}
+        public virtual void HandleToggle(string name, bool isOn) {}
+        public virtual void HandleDropdown(string name, int index) {}
 
 #endregion
 
@@ -112,7 +112,7 @@ namespace FrameWork
             gameObject.SetActive(true);
         } 
 
-        public abstract void OnShow();
+        public virtual void OnShow() {}
 
         public virtual void Hide()
         {
