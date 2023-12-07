@@ -15,7 +15,7 @@ public class ButtonTest : MonoBehaviour
 
     private void Update()
     {
-        TestPool();
+        // TestPool();
     }
 
     private void Awake()
@@ -23,11 +23,13 @@ public class ButtonTest : MonoBehaviour
         // TestEvent();
         // TestInput();    
         // TestPool();
+        // TestScene();
     }
 
     private void OnGUI()
     {
         // TestMusic();
+        TestUIManager();
     }
 
     public void TestMusic()
@@ -50,6 +52,22 @@ public class ButtonTest : MonoBehaviour
         }
     }
 
+    public void TestUIManager()
+    {
+        if (GUI.Button(new Rect(0, 0, 100, 100), "OpenPanel"))
+        {
+            UGUIPanelManager.Instance.OpenPanel("TestUIPanel");
+        }
+        if (GUI.Button(new Rect(0, 100, 100, 100), "ClosePanel"))
+        {
+            UGUIPanelManager.Instance.ClosePanel("TestUIPanel");
+        }
+        if (GUI.Button(new Rect(0, 200, 100, 100), "TogglePanel"))
+        {
+            UGUIPanelManager.Instance.TogglePanel("TestUIPanel");
+        }
+    }
+
     public void TestInput()
     {
         InputManager.Instance.SwitchInput(true);
@@ -66,11 +84,18 @@ public class ButtonTest : MonoBehaviour
     /// <summary>
     /// 测试场景管理器模块,但是加载速度太快了看不出变化,NND
     /// </summary>
+    static bool isLoaded = false;
     public async void TestScene()
     {
+        if (isLoaded)
+            return;
+        isLoaded = true;
+        await UniTask.Delay(1000);
         Debug.Log("BeforeLoadingScene");
         await GameSceneManager.Instance.LoadSceneAsync("TestNewScene");
         Debug.Log("AfterLoadingScene");
+        await UniTask.Delay(1000);
+        await GameSceneManager.Instance.LoadSceneAsync("SampleScene");
     }
 
     /// <summary>

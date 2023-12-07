@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\PoolManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PoolObject.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\KeyValueDataManager.cs" />
+    <Compile Include="Assets\Scripts\ProjectFramework\UGUIPanelManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\Extention.cs" />

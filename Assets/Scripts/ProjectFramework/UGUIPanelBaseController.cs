@@ -110,6 +110,7 @@ namespace FrameWork
         public virtual void Show()
         {
             gameObject.SetActive(true);
+            OnShow();
         } 
 
         public virtual void OnShow() {}
@@ -119,7 +120,19 @@ namespace FrameWork
             gameObject.SetActive(false);
         }
 
-#endregion
+        public virtual void ToggleState()
+        {
+            if (gameObject.activeSelf)
+            {
+                Hide();
+            }
+            else
+            {
+                Show();
+            }
+        }
+
+        #endregion
 
         // 
     }
