@@ -2,15 +2,24 @@ using FrameWork;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TestUIPanel : UGUIPanelBaseController
 {
     protected override void InitCallBack()
     {
-        // GetUIComponent<Button>("Button1").onClick.AddListener(OnClickButton1);
-        // GetUIComponent<Button>("Button2").onClick.AddListener(OnClickButton2);
+        TestCustomEvent();
     } 
+
+    public void TestCustomEvent()
+    {
+        var button1 = GetUIComponent<Button>("Button1");
+        UGUIPanelManager.AddCustomEventCallback(button1, EventTriggerType.Drag, x =>
+        {
+            button1.transform.position = x.currentInputModule.input.mousePosition;
+        });
+    }
 
     public void OnClickButton1()
     {

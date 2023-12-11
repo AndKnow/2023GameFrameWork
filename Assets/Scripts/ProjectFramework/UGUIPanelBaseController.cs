@@ -17,6 +17,12 @@ namespace FrameWork
 
         protected void Awake()
         {
+            Init();
+        }
+
+        // 将初始化的过程封装出来,不要太依赖Mono的回调,因为GameObject不打开的时候不会触发
+        protected virtual void Init()
+        {
             FindAllComponents();
             InitCallBack();
         }

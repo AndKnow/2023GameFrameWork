@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 namespace FrameWork
 {
@@ -30,6 +32,9 @@ namespace FrameWork
         {
             _panelDic = new Dictionary<string, UGUIPanelBaseController>();
         }
+
+        // 面板管理
+#region 
 
         UGUIPanelBaseController GetPanel(string PanelName)
         {
@@ -78,5 +83,33 @@ namespace FrameWork
                 panel.ToggleState();
             }
         }
+        
+#endregion
+
+        // UI拓展方法
+
+#region
+
+        public static void AddCustomEventCallback(UIBehaviour uGuiObj, EventTriggerType eventType, Action<BaseEventData> callback)
+        {
+            var trigger = uGuiObj.GetComponent<EventTrigger>();
+            if (trigger == null)
+            {
+                trigger = uGuiObj.gameObject.AddComponent<EventTrigger>();
+            }
+
+            var entry = trigger.triggers.FirstOrDefault(x => x.eventID == eventType);
+            if (entry == null)
+            {
+                entry = new EventTrigger.Entry();
+                entry.eventID = eventType;
+                trigger.triggers.Add(entry);
+            }
+
+            entry.callback.AddListener(new UnityAction<BaseEventData>(callback));
+        }
+
+#endregion
     }
+
 }
