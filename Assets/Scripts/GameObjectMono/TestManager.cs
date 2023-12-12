@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ButtonTest : MonoBehaviour
+public class TestManager : MonoBehaviour
 {
     public GameObject template1;
     public GameObject template2;
@@ -29,7 +29,7 @@ public class ButtonTest : MonoBehaviour
     private void OnGUI()
     {
         // TestMusic();
-        TestUIManager();
+        //TestUIManager();
     }
 
     public void TestMusic()
