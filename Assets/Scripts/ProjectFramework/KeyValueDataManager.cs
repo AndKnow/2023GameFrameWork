@@ -79,12 +79,12 @@ namespace FrameWork
             TemporaryData[key][subKey] = value;
         }
 
-        public string GetData(string key)
+        public string GetData(string key, string defaultRet = null)
         {
             return HashGetData(key, "DragonBornDataBase");
         }
 
-        public string HashGetData(string key, string subKey)
+        public string HashGetData(string key, string subKey, string defaultRet = null)
         {
             string result = null;
             if (TemporaryData.ContainsKey(key) && TemporaryData[key].ContainsKey(subKey))
@@ -96,7 +96,7 @@ namespace FrameWork
                 result = PersistentData[key][subKey];
             }
             
-            return result;
+            return result ?? defaultRet;
         }
 
 #endregion
