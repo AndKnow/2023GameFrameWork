@@ -19,10 +19,10 @@ namespace MVC
             TestMVCModel();
         }
 
-        MVCModel<int> _data;
+        UGUIBaseModel<int> _data;
         public void InitTestMVCModel()
         {
-            _data = new MVCModel<int>().InitData(500);
+            _data = new UGUIBaseModel<int>().InitData(500);
             _data.UpdateEvent += OnModelDataChanged;
         }
 
