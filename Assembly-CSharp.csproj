@@ -61,13 +61,16 @@
     <Compile Include="Assets\Scripts\ProjectFramework\EventManager.cs" />
     <Compile Include="Assets\Scripts\MVC\UGUIBaseController.cs" />
     <Compile Include="Assets\Scripts\MVC\UGUIBaseModel.cs" />
+    <Compile Include="Assets\Scripts\GameObjectMono\PanelModel.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\MusicManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\TestUIPanel.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\TestManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\NoMono.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\InputManager.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\SceneManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjectMono\PanelView.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PublicMonoManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjectMono\PanelController.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PoolManager.cs" />
     <Compile Include="Assets\Scripts\MVC\UGUIBaseView.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PoolObject.cs" />

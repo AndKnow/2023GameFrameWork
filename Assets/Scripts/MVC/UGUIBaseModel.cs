@@ -5,20 +5,37 @@ using System.Threading.Tasks;
 using UnityEngine.Events;
 
 namespace MVC
-{
-    public abstract class UGUIBaseModel
+{   
+    /// <summary>
+    /// 数据全部设置为静态的
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public abstract class UGUIBaseModel<T> where T : UGUIBaseModel<T>, new()
     {
 
 
         // 数据的初始化、更新、存储
-#region 
+#region     
+        protected static T _instance;
+        public static T Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new T();
+                }
 
-        public abstract UGUIBaseModel InitData<T>(T data);
+                return _instance;
+            }
+        }
+
+        public abstract T InitData<T>(T data);
 
         public virtual void UpdateData()
         {
             ConcreteUpdate();
-            _updateEvent?.Invoke(this);
+            _updateEvent?.Invoke(this as T);
         }
 
         public virtual void UpdateDataWithoutNotify()
@@ -35,8 +52,8 @@ namespace MVC
         // 数据更新的回调
 #region
 
-        protected event UnityAction<UGUIBaseModel> _updateEvent;
-        public event UnityAction<UGUIBaseModel> UpdateEvent
+        protected event UnityAction<T> _updateEvent;
+        public event UnityAction<T> UpdateEvent
         {
             add
             {
@@ -49,5 +66,6 @@ namespace MVC
         }
 
 #endregion
+
     }
 }

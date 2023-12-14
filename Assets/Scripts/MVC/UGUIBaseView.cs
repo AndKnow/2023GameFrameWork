@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace MVC
 {
-    public abstract class UGUIBaseView : MonoBehaviour
+    public abstract class UGUIBaseView<T> : MonoBehaviour where T : UGUIBaseModel<T>, new()
     {
 
         // 初始化
@@ -98,7 +98,7 @@ namespace MVC
             }
         }
         
-        public abstract void RefreshView(UGUIBaseModel data);
+        public abstract void RefreshView(T data);
 
 #endregion
 

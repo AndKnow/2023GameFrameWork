@@ -10,17 +10,17 @@ namespace MVC
     /// 如果一个面板绑定一个Controller的派生类,那么是否可以将其定义为类的单例?
     /// 但是如果对象消失的话,Controller也会消失,不如将数据设置为单例,Controller不设置为单例
     /// </summary>
-    public abstract class UGUIBaseController : MonoBehaviour
+    public abstract class UGUIBaseController<T> : MonoBehaviour where T : UGUIBaseModel<T>, new()
     {
 
-        protected UGUIBaseView _view;
-        protected UGUIBaseView _safeView
+        protected UGUIBaseView<T> _view;
+        protected UGUIBaseView<T> _safeView
         {
             get
             {
                 if (_view == null)
                 {
-                    _view = GetComponentInChildren<UGUIBaseView>();
+                    _view = GetComponentInChildren<UGUIBaseView<T>>(true);
                     _view.Init();
                 }
 
@@ -28,7 +28,7 @@ namespace MVC
             }
         }
 
-        protected abstract UGUIBaseModel _model { get; }
+        protected T _data => UGUIBaseModel<T>.Instance as T;
 
         // 监听输入
 #region 
@@ -55,12 +55,12 @@ namespace MVC
 
         public virtual void InitModelCallback()
         {
-            _model.UpdateEvent += RefreshView;
+            _data.UpdateEvent += RefreshView;
         }
 
-        public virtual void RefreshView(UGUIBaseModel model)
+        public virtual void RefreshView(T data)
         {
-            _safeView.RefreshView(model);
+            _safeView.RefreshView(data);
         }
 
 #endregion
