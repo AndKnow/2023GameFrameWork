@@ -119,5 +119,51 @@ namespace FrameWork
         }
 
 #endregion
+    
+        // 泛型数据保存
+#region 
+
+        protected Dictionary<string, Dictionary<string, ICustomData>> _customDataDic;
+        public Dictionary<string, Dictionary<string, ICustomData>> CustomDataDic
+        {
+            get
+            {
+                if (_customDataDic == null)
+                {
+                    _customDataDic = new Dictionary<string, Dictionary<string, ICustomData>>();
+                }
+                return _customDataDic;
+            }
+        }
+
+        public void SetData<T>(string key, T data) where T : ICustomData
+        {
+            var classType = typeof(T).ToString();
+            if (!CustomDataDic.ContainsKey(classType))
+            {
+                CustomDataDic.Add(classType, new Dictionary<string, ICustomData>());
+            }
+
+            CustomDataDic[classType][key] = data;
+        }
+
+        public T GetData<T>(string key) where T : ICustomData
+        {
+            var classType = typeof(T).ToString();
+            if (CustomDataDic.ContainsKey(classType) && CustomDataDic[classType].ContainsKey(key))
+            {
+                return (T)CustomDataDic[classType][key];
+            }
+
+            return default;
+        }
+
+#endregion
+
+    }
+
+    public interface  ICustomData
+    {
+
     }
 }

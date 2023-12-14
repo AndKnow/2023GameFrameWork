@@ -44,7 +44,6 @@ namespace MVC
         {
             InitModelCallback();
             InitViewCallback();
-            
         }
 
 #endregion
@@ -69,6 +68,10 @@ namespace MVC
             _data.UpdateEvent += RefreshView;
         }
 
+        /// <summary>
+        /// 当数据发生变化的时候触发回调调用这个函数
+        /// </summary>
+        /// <param name="data"></param>
         protected virtual void RefreshView(T data)
         {
             _safeView.RefreshView(data);

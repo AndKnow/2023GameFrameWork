@@ -1,10 +1,11 @@
+using FrameWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MVC;
 
-public class PanelModel : UGUIBaseModel<PanelModel>
+public class PanelModel : UGUIBaseModel<PanelModel>, ICustomData
 {
     protected int _modelData;
     public int ModelData
@@ -29,6 +30,9 @@ public class PanelModel : UGUIBaseModel<PanelModel>
 
     public override void SaveData()
     {
-        throw new NotImplementedException();
+        if (_modelData % 200 == 0)
+        {
+            KeyValueDataManager.Instance.SetData("Password", this);
+        }
     }
 }

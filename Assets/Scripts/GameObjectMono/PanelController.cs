@@ -1,3 +1,4 @@
+using FrameWork;
 using MVC;
 using System;
 using UnityEngine;
@@ -22,5 +23,6 @@ public class PanelController : UGUIBaseController<PanelModel>
     {
         base.RefreshView(data);
         Debug.Log("非法访问" + _data.ModelData);
+        Debug.Log("获取自定泛型数据" + KeyValueDataManager.Instance.GetData<PanelModel>("Password").ModelData); 
     }
 }

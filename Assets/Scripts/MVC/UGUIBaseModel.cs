@@ -36,7 +36,9 @@ namespace MVC
         public virtual void UpdateData()
         {
             ConcreteUpdate();
+            SaveData();
             _updateEvent?.Invoke(this as T);
+            //invokde之后后面的函数都不会执行了？估计是因为先崩溃了
         }
 
         public virtual void UpdateDataWithoutNotify()
