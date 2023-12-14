@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace MVC
 {
@@ -23,42 +24,52 @@ namespace MVC
                     _view = GetComponentInChildren<UGUIBaseView<T>>(true);
                     _view.Init();
                 }
-
+                
+                Assert.IsNotNull(_view, $"{this.GetType()} 找不到view对象");
                 return _view;
             }
         }
 
         protected T _data => UGUIBaseModel<T>.Instance as T;
 
-        // 监听输入
-#region 
+        // 初始化
+#region
 
-        public abstract void InitViewCallback();
+        protected void Awake()
+        {
+            Init();
+        }
+
+        public virtual void Init()
+        {
+            InitModelCallback();
+            InitViewCallback();
+            
+        }
 
 #endregion
 
-        // 更新数据
+        // 监听输入和变化
 #region 
+
+        protected abstract void InitViewCallback();
 
         /// <summary>
         /// 根据情况监听和处理view上面的控件变化
         /// </summary>
-        public virtual void HandleControls()
-        {
-
-        }
+        protected abstract void HandleControls();
 
 #endregion
 
         // 刷新显示
 #region 
 
-        public virtual void InitModelCallback()
+        protected virtual void InitModelCallback()
         {
             _data.UpdateEvent += RefreshView;
         }
 
-        public virtual void RefreshView(T data)
+        protected virtual void RefreshView(T data)
         {
             _safeView.RefreshView(data);
         }

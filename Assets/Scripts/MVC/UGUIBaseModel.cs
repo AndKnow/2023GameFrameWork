@@ -24,13 +24,14 @@ namespace MVC
                 if (_instance == null)
                 {
                     _instance = new T();
+                    _instance.InitData();
                 }
 
                 return _instance;
             }
         }
 
-        public abstract T InitData<T>(T data);
+        public abstract T InitData();
 
         public virtual void UpdateData()
         {

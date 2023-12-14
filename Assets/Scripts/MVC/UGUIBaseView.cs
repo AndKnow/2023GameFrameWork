@@ -37,9 +37,9 @@ namespace MVC
             FindAllComponents<Dropdown>();
         }
 
-        protected void FindAllComponents<T>() where T : Component
+        protected void FindAllComponents<T1>() where T1 : Component
         {
-            T[] components = GetComponentsInChildren<T>(true);
+            T1[] components = GetComponentsInChildren<T1>(true);
             foreach (var component in components)
             {
                 string componentName = component.gameObject.name;
@@ -52,15 +52,15 @@ namespace MVC
             }
         }
 
-        public T GetUIComponent<T> (string componentName) where T : Component
+        public T1 GetViewComponent<T1> (string componentName) where T1 : Component
         {
             if (_componentsDic.ContainsKey(componentName))
             {
                 foreach(var com in _componentsDic[componentName])
                 {
-                    if (com is T)
+                    if (com is T1)
                     {
-                        return com as T;
+                        return com as T1;
                     }
                 }
             }

@@ -11,31 +11,19 @@ namespace MVC
     {
         private void Awake()
         {
-            InitTestMVCModel();
+            
         }
 
         protected void OnGUI()
         {
-            TestMVCModel();
-        }
-
-        UGUIBaseModel<int> _data;
-        public void InitTestMVCModel()
-        {
-            _data = new UGUIBaseModel<int>().InitData(500);
-            _data.UpdateEvent += OnModelDataChanged;
-        }
-
-        public void TestMVCModel()
-        {
-            if (GUI.Button(new Rect(0, 0, 100, 100), "UpdateData"))
+            if (GUI.Button(new Rect(0, 0, 100, 100), "Call MVC Panel")) 
             {
-                _data.UpdateData(x =>
-                {
-                    return x + 100;
-                });
+                UGUIPanelManager.Instance.OpenPanel("MVCPanel");
             }
-
+            if (GUI.Button(new Rect(0, 100, 100, 100), "close MVC Panel2"))
+            {
+                UGUIPanelManager.Instance.ClosePanel("MVCPanel");
+            }
         }
 
         public void OnModelDataChanged(int data)
