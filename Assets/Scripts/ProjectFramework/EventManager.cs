@@ -66,6 +66,13 @@ namespace FrameWork
             }
         }
 
+        public void AddAsyncEventListener(string eventName, Func<UniTask> func, ref Action onDestroy)
+        {
+            AddAsyncEventListener(eventName, func);
+
+            onDestroy += () => RemoveAsyncEventListener(eventName, func);
+        }
+
         public void RemoveAsyncEventListener(string eventName, Func<UniTask> func)
         {
             if (_eventAsyncDic.ContainsKey(eventName))
@@ -84,7 +91,7 @@ namespace FrameWork
         
 #endregion
     
-        // 异步版本的事件管理器
+        // 有参数版本的异步版本的事件管理器
 #region
 
         public void AddAsyncEventListener<T>(string eventName, Func<T, UniTask> func)
@@ -95,6 +102,13 @@ namespace FrameWork
             }
 
             (_eventAsyncDic[eventName] as EventFunc<T>).func += func;
+        }
+
+        public void AddAsyncEventListener<T>(string eventName, Func<T, UniTask> func, ref Action onDestroy)
+        {
+            AddAsyncEventListener(eventName, func);
+
+            onDestroy += () => RemoveAsyncEventListener(eventName, func);
         }
 
         public void RemoveAsyncEventListener<T>(string eventName, Func<T, UniTask> func)
