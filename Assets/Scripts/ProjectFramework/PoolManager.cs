@@ -72,7 +72,7 @@ namespace FrameWork
             // 也是为了防止切换场景的时候移除了对象, 但是池中还保留了引用
             if (go == null)
             {
-                await ResourceManager.Instance.InstantiateAsync<GameObject>(_template);
+                GameObject.Instantiate<GameObject>(_template);
                 PoolManager.Instance.ClearNullKeys();
             }
 

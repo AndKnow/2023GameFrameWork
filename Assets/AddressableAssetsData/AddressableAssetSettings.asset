@@ -46,6 +46,8 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: a823f16dd2791734b85f3384cfed7d20, type: 2}
   - {fileID: 11400000, guid: 7aaa3f681ef91134d89dcb11c0197780, type: 2}
+  - {fileID: 11400000, guid: b48d1a2bb6fee39468b8e91fd22130fa, type: 2}
+  - {fileID: 11400000, guid: 38d1154a207643c44a8cb288e087cb5f, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -87,6 +89,8 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Panel
+    - Object
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: cca2fa8c2a104154eb18b2c7db49cc05, type: 2}
@@ -105,5 +109,6 @@ MonoBehaviour:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}
     m_NextInstanceId: 0
-    m_RegisteredServiceTypeRefs: []
+    m_RegisteredServiceTypeRefs:
+    - UnityEditor.AddressableAssets.HostingServices.HttpHostingService, Unity.Addressables.Editor
     m_PingTimeoutInMilliseconds: 5000

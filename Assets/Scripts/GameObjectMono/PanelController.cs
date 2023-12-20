@@ -16,7 +16,7 @@ public class PanelController : UGUIBaseController<PanelModel>
         _safeView.GetViewComponent<Button>("Add").onClick.AddListener(() =>
         {
             _data.UpdateData();
-        });
+        }); 
     }
 
     protected override void RefreshView(PanelModel data)
