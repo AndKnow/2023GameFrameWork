@@ -16,7 +16,12 @@ namespace MVC
 
         protected void OnGUI()
         {
-            if (GUI.Button(new Rect(0, 0, 100, 100), "Call MVC Panel")) 
+            //TestMVCPanel();
+        }
+
+        private static void TestMVCPanel()
+        {
+            if (GUI.Button(new Rect(0, 0, 100, 100), "Call MVC Panel"))
             {
                 UGUIPanelManager.Instance.OpenPanel("MVCPanel");
             }
@@ -24,6 +29,11 @@ namespace MVC
             {
                 UGUIPanelManager.Instance.ClosePanel("MVCPanel");
             }
+        }
+
+        public void OnConnectedToServer()
+        {
+            
         }
 
         public void OnModelDataChanged(int data)
