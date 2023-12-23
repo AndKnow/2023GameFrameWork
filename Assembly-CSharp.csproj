@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\ProjectFramework\SceneManager.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PanelView.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PublicMonoManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjectMono\TestAddressables.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\EventTiming.cs" />
     <Compile Include="Assets\Scripts\GameObjectMono\PanelController.cs" />
     <Compile Include="Assets\Scripts\ProjectFramework\PoolManager.cs" />

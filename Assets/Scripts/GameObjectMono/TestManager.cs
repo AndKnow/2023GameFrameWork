@@ -32,7 +32,7 @@ public class TestManager : MonoBehaviour
     {
         // TestMusic();
         //TestUIManager();
-        TestUniTaskAddressables();
+        //TestUniTaskAddressables();
     }
 
     public void TestMusic()
@@ -143,37 +143,7 @@ public class TestManager : MonoBehaviour
         Debug.Log("Handler " + sender.ObjectName);
     }
 
-    public async void TestUniTaskAddressables()
-    {
-        if (GUI.Button(new Rect(0, 0, 100, 100), "LoadSingleByName"))
-        {
-            var result = await ResourceManager.LoadAsync<GameObject>("Sphere");
-            Debug.Log("LoadSingleByName " + result.gameObject.name);
-        }
 
-        if (GUI.Button(new Rect(0, 100, 100, 100), "LoadSingleByLabel"))
-        {
-            var result = await ResourceManager.LoadAsync<GameObject>("Object");
-            Debug.Log("LoadSingleByLabel " + result.gameObject.name);
-        }
 
-        if (GUI.Button(new Rect(0, 200, 100, 100), "LoadMultipleIntersection"))
-        {
-            var result = await ResourceManager.LoadAllAsync<GameObject>(mergeMode:Addressables.MergeMode.Intersection, releaseDependenciesOnFailure:true, "MVCPanel", "Panel");
-            foreach (var item in result)
-            {
-                Debug.Log("LoadMultipleIntersection " + item.gameObject.name);
-            }
-        }
-
-        if (GUI.Button(new Rect(0, 300, 100, 100), "LoadMultipleUnion"))
-        {
-            var result = await ResourceManager.LoadAllAsync<GameObject>(mergeMode:Addressables.MergeMode.Union, releaseDependenciesOnFailure:true, "MVCPanel", "Panel");
-            foreach (var item in result)
-            {
-                Debug.Log("LoadMultipleUnion " + item.gameObject.name);
-            }
-        }
-
-    }
+    
 }
