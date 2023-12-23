@@ -46,7 +46,7 @@ namespace FrameWork
 
         public static async UniTask<T> LoadAsync<T>(string path) where T : Object
         {
-            string key = typeof(T).Name + path;
+            string key = typeof(T).Name + "_" + path;
             if (_loadedHandles.ContainsKey(key))
             {
                 Debug.Log("LoadAllAsync from cache " + key);

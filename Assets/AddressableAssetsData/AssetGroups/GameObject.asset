@@ -17,14 +17,14 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 26e514251a9e67b4db09d340f7f4ac5c
   m_SerializeEntries:
-  - m_GUID: 78550647e2d56ac4b93a2d2c33534624
-    m_Address: Cube
+  - m_GUID: fa28850b3e70c90488a8f7a718e50938
+    m_Address: Sphere
     m_ReadOnly: 0
     m_SerializedLabels:
     - Object
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fa28850b3e70c90488a8f7a718e50938
-    m_Address: Sphere
+  - m_GUID: 78550647e2d56ac4b93a2d2c33534624
+    m_Address: Cube
     m_ReadOnly: 0
     m_SerializedLabels:
     - Object
