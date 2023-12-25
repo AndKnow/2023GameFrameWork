@@ -13,7 +13,7 @@ public class PoolObject : MonoBehaviour, IPoolObject
         transform.localPosition = Vector3.one * Random.Range(1, 10);
         ObjectName = Random.Range(1, 999).ToString();
 
-        this.GetComponent<MeshRenderer>().material = await ResourceManager.LoadAsync<Material>("Material");
+        this.GetComponent<MeshRenderer>().material = await ResourceManager.LoadAsync<Material>("ActiveMaterial");
         Invoke("ReturnSelf", 2f);
     }
 
