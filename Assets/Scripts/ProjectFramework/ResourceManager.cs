@@ -1,5 +1,6 @@
 
 using Cysharp.Threading.Tasks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using Object = UnityEngine.Object;
 
 namespace FrameWork
 {
@@ -41,7 +43,7 @@ namespace FrameWork
 
         // 热更新版本的异步资源加载
 #region 
-        protected static Dictionary<string, IEnumerator> _loadedHandles = new Dictionary<string, IEnumerator>();
+        protected static Dictionary<string, AsyncOperationHandle> _loadedHandles = new Dictionary<string, AsyncOperationHandle>();
         protected static CancellationTokenSource _cts;
 
         public static async UniTask<T> LoadAsync<T>(string path) where T : Object
@@ -50,15 +52,15 @@ namespace FrameWork
             if (_loadedHandles.ContainsKey(key))
             {
                 Debug.Log("LoadAllAsync from cache " + key);
-                return ((AsyncOperationHandle<T>)_loadedHandles[key]).Result;
+                return _loadedHandles[key].Convert<T>().Result;
             }
 
-            var handler = Addressables.LoadAssetAsync<T>(path);
-            var result = await handler.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
+            var handle = Addressables.LoadAssetAsync<T>(path);
+            var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, handler);
-                return handler.Result;
+                _loadedHandles.Add(key, handle);
+                return handle.Result;
             }
             else
             {
@@ -72,7 +74,7 @@ namespace FrameWork
             string key = typeof(T).Name + path;
             if (_loadedHandles.ContainsKey(key))
             {
-                Addressables.Release((AsyncOperationHandle<T>)_loadedHandles[key]);
+                Addressables.Release(_loadedHandles[key].Convert<T>());
                 _loadedHandles.Remove(key);
             }
         }
@@ -92,15 +94,15 @@ namespace FrameWork
             if (_loadedHandles.ContainsKey(key))
             {
                 Debug.Log("LoadAllAsync from cache " + key);
-                return ((AsyncOperationHandle<IList<T>>)_loadedHandles[key]).Result;
+                return _loadedHandles[key].Convert<IList<T>>().Result;
             }
 
-            AsyncOperationHandle<IList<T>> handler = Addressables.LoadAssetsAsync<T>(new List<string>(keys), null, mergeMode, releaseDependenciesOnFailure);
-            var result = await handler.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
+            AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(new List<string>(keys), null, mergeMode, releaseDependenciesOnFailure);
+            var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, handler);
-                return (handler.Result).ToList();
+                _loadedHandles.Add(key, handle);
+                return (handle.Result).ToList();
             }
             else
             {
@@ -114,9 +116,21 @@ namespace FrameWork
             string key = typeof(T).Name + "_" + string.Join("_", keys) + "_" + mergeMode;
             if (_loadedHandles.ContainsKey(key))
             {
-                Addressables.Release((AsyncOperationHandle<List<T>>)_loadedHandles[key]);
+                Addressables.Release(_loadedHandles[key].Convert<IList<T>>());
                 _loadedHandles.Remove(key);
             }
+        }
+
+        public static void ReleaseAll()
+        {
+            foreach (var item in _loadedHandles)
+            {
+                Addressables.Release(item.Value);
+            }
+            _loadedHandles.Clear();
+            AssetBundle.UnloadAllAssetBundles(true);
+            Resources.UnloadUnusedAssets();
+            GC.Collect();
         }
 
 #endregion
