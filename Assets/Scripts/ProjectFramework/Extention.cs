@@ -55,4 +55,12 @@ public static class Extension
         component.gameObject.SetActive(true);
         return component;
     }
+
+    public static void Foreach<T>(this IEnumerable<T> collections, Action<T> action)
+    {
+        foreach (var item in collections)
+        {
+            action(item);
+        }
+    }
 }

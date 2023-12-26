@@ -12,6 +12,45 @@ using Object = UnityEngine.Object;
 
 namespace FrameWork
 {
+
+    public class HandleInfo
+    {
+        protected uint _count = 0;
+        protected AsyncOperationHandle _handle;
+
+        public HandleInfo(AsyncOperationHandle handle)
+        {
+            _handle = handle;
+            _count = 1;
+        }
+
+        public AsyncOperationHandle<T> GetHandle<T>()
+        {
+            _count++;
+            return _handle.Convert<T>();
+        }
+
+        public bool Release<T>()
+        {
+            _count--;
+            if (_count == 0)
+            {
+                Addressables.Release(_handle.Convert<T>());
+                return true;
+            }
+
+            return false;
+        }
+
+        public void ForceRelease()
+        {
+            _count = 0;
+            Addressables.Release(_handle);
+        }
+        
+    }
+
+
     /// <summary>
     /// 基于Addressables的资源管理器
     /// </summary>
@@ -43,7 +82,7 @@ namespace FrameWork
 
         // 热更新版本的异步资源加载
 #region 
-        protected static Dictionary<string, AsyncOperationHandle> _loadedHandles = new Dictionary<string, AsyncOperationHandle>();
+        protected static Dictionary<string, HandleInfo> _loadedHandles = new Dictionary<string, HandleInfo>();
         protected static CancellationTokenSource _cts;
 
         public static async UniTask<T> LoadAsync<T>(string path) where T : Object
@@ -52,14 +91,14 @@ namespace FrameWork
             if (_loadedHandles.ContainsKey(key))
             {
                 Debug.Log("LoadAllAsync from cache " + key);
-                return _loadedHandles[key].Convert<T>().Result;
+                return _loadedHandles[key].GetHandle<T>().Result;
             }
 
             var handle = Addressables.LoadAssetAsync<T>(path);
             var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, handle);
+                _loadedHandles.Add(key, new HandleInfo(handle));
                 return handle.Result;
             }
             else
@@ -69,13 +108,20 @@ namespace FrameWork
             }
         }
 
+        /// <summary>
+        /// 释放资源的时候也需要知道类型吗?
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="path"></param>
         public static void Release<T>(string path) where T : Object
         {
             string key = typeof(T).Name + path;
             if (_loadedHandles.ContainsKey(key))
             {
-                Addressables.Release(_loadedHandles[key].Convert<T>());
-                _loadedHandles.Remove(key);
+                if (_loadedHandles[key].Release<T>())
+                {
+                    _loadedHandles.Remove(key);
+                }
             }
         }
 
@@ -94,15 +140,15 @@ namespace FrameWork
             if (_loadedHandles.ContainsKey(key))
             {
                 Debug.Log("LoadAllAsync from cache " + key);
-                return _loadedHandles[key].Convert<IList<T>>().Result;
+                return _loadedHandles[key].GetHandle<IList<T>>().Result;
             }
 
             AsyncOperationHandle<IList<T>> handle = Addressables.LoadAssetsAsync<T>(new List<string>(keys), null, mergeMode, releaseDependenciesOnFailure);
             var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, handle);
-                return (handle.Result).ToList();
+                _loadedHandles.Add(key, new HandleInfo(handle));
+                return handle.Result;
             }
             else
             {
@@ -116,17 +162,16 @@ namespace FrameWork
             string key = typeof(T).Name + "_" + string.Join("_", keys) + "_" + mergeMode;
             if (_loadedHandles.ContainsKey(key))
             {
-                Addressables.Release(_loadedHandles[key].Convert<IList<T>>());
-                _loadedHandles.Remove(key);
+                if (_loadedHandles[key].Release<IList<T>>())
+                {
+                    _loadedHandles.Remove(key);
+                }
             }
         }
 
         public static void ReleaseAll()
         {
-            foreach (var item in _loadedHandles)
-            {
-                Addressables.Release(item.Value);
-            }
+            _loadedHandles.Foreach(x => x.Value.ForceRelease());
             _loadedHandles.Clear();
             AssetBundle.UnloadAllAssetBundles(true);
             Resources.UnloadUnusedAssets();
