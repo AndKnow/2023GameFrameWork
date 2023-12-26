@@ -63,5 +63,10 @@ public class TestAddressables : MonoBehaviour
                 Debug.Log("LoadMultipleUnion " + item.gameObject.name);
             }
         }
+
+        if (GUI.Button(new Rect(0, 400, 100, 100), "ClearAddressables"))
+        {
+            ResourceManager.ClearAll();
+        }
     }
 }

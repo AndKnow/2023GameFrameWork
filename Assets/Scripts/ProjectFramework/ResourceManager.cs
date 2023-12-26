@@ -98,8 +98,17 @@ namespace FrameWork
             var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, new HandleInfo(handle));
-                return handle.Result;
+                //多个同时启动加载的话,可能会有多次插入
+                if (!_loadedHandles.ContainsKey(key))
+                {
+                    _loadedHandles.Add(key, new HandleInfo(handle));
+                    return handle.Result;
+                }
+                else
+                {
+                    Addressables.Release(handle);
+                    return _loadedHandles[key].GetHandle<T>().Result;
+                }
             }
             else
             {
@@ -115,7 +124,7 @@ namespace FrameWork
         /// <param name="path"></param>
         public static void Release<T>(string path) where T : Object
         {
-            string key = typeof(T).Name + path;
+            string key = typeof(T).Name + "_" + path;
             if (_loadedHandles.ContainsKey(key))
             {
                 if (_loadedHandles[key].Release<T>())
@@ -147,8 +156,17 @@ namespace FrameWork
             var result = await handle.ToUniTask(cancellationToken: _cts.Token).SuppressCancellationThrow();
             if (!result.IsCanceled)
             {
-                _loadedHandles.Add(key, new HandleInfo(handle));
-                return handle.Result;
+                //多个同时启动加载的话,可能会有多次插入
+                if (!_loadedHandles.ContainsKey(key))
+                {
+                    _loadedHandles.Add(key, new HandleInfo(handle));
+                    return handle.Result;
+                }
+                else
+                {
+                    Addressables.Release(handle);
+                    return _loadedHandles[key].GetHandle<IList<T>>().Result;
+                }
             }
             else
             {
@@ -169,7 +187,7 @@ namespace FrameWork
             }
         }
 
-        public static void ReleaseAll()
+        public static void ClearAll()
         {
             _loadedHandles.Foreach(x => x.Value.ForceRelease());
             _loadedHandles.Clear();
